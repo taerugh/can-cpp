@@ -93,11 +93,3 @@ Include the library in your CMake project:
 find_package(can-cpp REQUIRED)
 target_link_libraries(your_target can-cpp::can-cpp)
 ```
-
-## Library Structure
-
-- `can/` - Core CAN functionality (Frame, Packet)
-- `lib/` - Utility classes (Bits, byte manipulation)
-- `canopen/` - CANopen protocol implementation (COB-ID handling, function codes)
-- `n2k/` - NMEA 2000 protocol implementation (PGN handling, priority, source address)
-- `j1939/` - SAE J1939 protocol implementation (future)
