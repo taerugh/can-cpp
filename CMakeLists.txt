@@ -11,39 +11,14 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Define the library target
-add_library(can-cpp
-  # Source files
-  src/can/packet.cpp
-  src/lib/byte_manip.cpp
-  src/canopen/canopen.cpp
-  src/n2k/n2k.cpp
-  
-  # Header files (for IDE support)
-  include/can-cpp/can/frame.hpp
-  include/can-cpp/can/packet.hpp
-  include/can-cpp/lib/bits.hpp
-  include/can-cpp/lib/byte_manip.hpp
-  include/can-cpp/canopen/canopen.hpp
-  include/can-cpp/n2k/n2k.hpp
-)
+# Define the library targets by adding subdirectories
+add_subdirectory(can)
+add_subdirectory(canopen)
+add_subdirectory(n2k)
 
-# Set target properties
-target_include_directories(can-cpp
-  PUBLIC
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>
-)
-
-# Compiler-specific options
-target_compile_features(can-cpp PUBLIC cxx_std_20)
-
-# Add compiler warnings
-if(MSVC)
-  target_compile_options(can-cpp PRIVATE /W4)
-else()
-  target_compile_options(can-cpp PRIVATE -Wall -Wextra -Wpedantic)
-endif()
+# Create a combined library target for backward compatibility
+add_library(can-cpp INTERFACE)
+target_link_libraries(can-cpp INTERFACE can canopen n2k)
 
 # Create alias target for easier consumption
 add_library(can-cpp::can-cpp ALIAS can-cpp)
@@ -51,16 +26,24 @@ add_library(can-cpp::can-cpp ALIAS can-cpp)
 # Install configuration
 include(GNUInstallDirs)
 
-# Install the library
-install(TARGETS can-cpp
+# Install the libraries
+install(TARGETS can canopen n2k can-cpp
   EXPORT can-cpp-targets
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
 )
 
-# Install headers
-install(DIRECTORY include/
+# Install headers from each library
+install(DIRECTORY can/include/
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  FILES_MATCHING PATTERN "*.hpp"
+)
+install(DIRECTORY canopen/include/
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+  FILES_MATCHING PATTERN "*.hpp"
+)
+install(DIRECTORY n2k/include/
   DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
   FILES_MATCHING PATTERN "*.hpp"
 )
@@ -113,9 +96,12 @@ if(ENABLE_LINTING)
   if(UNCRUSTIFY_EXECUTABLE)
     # Get all source files for linting
     file(GLOB_RECURSE ALL_SOURCE_FILES
-      "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp"
-      "${CMAKE_CURRENT_SOURCE_DIR}/src/*.hpp"
-      "${CMAKE_CURRENT_SOURCE_DIR}/include/*.hpp"
+      "${CMAKE_CURRENT_SOURCE_DIR}/can/src/*.cpp"
+      "${CMAKE_CURRENT_SOURCE_DIR}/can/include/*.hpp"
+      "${CMAKE_CURRENT_SOURCE_DIR}/canopen/src/*.cpp"
+      "${CMAKE_CURRENT_SOURCE_DIR}/canopen/include/*.hpp"
+      "${CMAKE_CURRENT_SOURCE_DIR}/n2k/src/*.cpp"
+      "${CMAKE_CURRENT_SOURCE_DIR}/n2k/include/*.hpp"
       "${CMAKE_CURRENT_SOURCE_DIR}/example/*.cpp"
       "${CMAKE_CURRENT_SOURCE_DIR}/test/*.cpp"
     )

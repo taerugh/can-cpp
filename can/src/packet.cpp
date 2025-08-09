@@ -1,6 +1,6 @@
-#include <can-cpp/can/packet.hpp>
+#include <packet.hpp>
 
-#include <can-cpp/lib/byte_manip.hpp>
+#include <byte_manip.hpp>
 
 
 namespace can

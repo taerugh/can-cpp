@@ -1,6 +1,6 @@
-#include <can-cpp/can/packet.hpp>
-#include <can-cpp/can/frame.hpp>
-#include <can-cpp/n2k/n2k.hpp>
+#include <packet.hpp>
+#include <frame.hpp>
+#include <n2k.hpp>
 #include <iostream>
 
 int main()

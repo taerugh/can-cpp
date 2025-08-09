@@ -1,5 +1,5 @@
-#include <can-cpp/can/packet.hpp>
-#include <can-cpp/can/frame.hpp>
+#include <packet.hpp>
+#include <frame.hpp>
 #include <iostream>
 
 int main()

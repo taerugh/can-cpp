@@ -1,4 +1,4 @@
-#include <can-cpp/can/packet.hpp>
+#include <packet.hpp>
 
 #include <gtest/gtest.h>
 

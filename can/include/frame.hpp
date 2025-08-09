@@ -1,6 +1,6 @@
 #pragma once
 
-#include <can-cpp/lib/byte_manip.hpp>
+#include <byte_manip.hpp>
 #include <array>
 
 

@@ -1,4 +1,4 @@
-#include <can-cpp/lib/bits.hpp>
+#include <bits.hpp>
 
 #include <gtest/gtest.h>
 

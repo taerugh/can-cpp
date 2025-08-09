@@ -1,6 +1,6 @@
-#include <can-cpp/can/packet.hpp>
-#include <can-cpp/can/frame.hpp>
-#include <can-cpp/canopen/canopen.hpp>
+#include <packet.hpp>
+#include <frame.hpp>
+#include <canopen.hpp>
 #include <iostream>
 
 int main()

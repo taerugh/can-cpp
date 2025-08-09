@@ -1,4 +1,4 @@
-#include <can-cpp/n2k/n2k.hpp>
+#include <n2k.hpp>
 
 
 namespace n2k

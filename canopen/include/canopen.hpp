@@ -1,6 +1,6 @@
 #pragma once
 
-#include <can-cpp/can/packet.hpp>
+#include <packet.hpp>
 
 
 namespace canopen

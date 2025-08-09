@@ -1,4 +1,4 @@
-#include <can-cpp/canopen/canopen.hpp>
+#include <canopen.hpp>
 
 #include <gtest/gtest.h>
 

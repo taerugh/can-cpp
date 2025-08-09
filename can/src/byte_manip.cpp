@@ -1,4 +1,4 @@
-#include <can-cpp/lib/byte_manip.hpp>
+#include <byte_manip.hpp>
 
 
 std::string bytes_to_string(const uint8_t *data, const std::size_t size)

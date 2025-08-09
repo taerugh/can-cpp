@@ -40,11 +40,21 @@ target_link_libraries(test_can
     gtest
 )
 
+target_include_directories(test_can
+  PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../can/include
+)
+
 target_link_libraries(test_bits
   PRIVATE
     can-cpp::can-cpp
     gtest_main
     gtest
+)
+
+target_include_directories(test_bits
+  PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../can/include
 )
 
 target_link_libraries(test_canopen
@@ -54,11 +64,23 @@ target_link_libraries(test_canopen
     gtest
 )
 
+target_include_directories(test_canopen
+  PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../can/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../canopen/include
+)
+
 target_link_libraries(test_n2k
   PRIVATE
     can-cpp::can-cpp
     gtest_main
     gtest
+)
+
+target_include_directories(test_n2k
+  PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/../can/include
+    ${CMAKE_CURRENT_SOURCE_DIR}/../n2k/include
 )
 
 # Enable CTest and add tests

@@ -1,7 +1,7 @@
 #pragma once
 
-#include <can-cpp/can/frame.hpp>
-#include <can-cpp/lib/bits.hpp>
+#include <frame.hpp>
+#include <bits.hpp>
 
 
 namespace can
