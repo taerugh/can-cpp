@@ -5,66 +5,94 @@
 
 int main()
 {
-  // Create an N2K packet with typical marine data
-  // Example: Engine parameters (PGN 127488)
-  uint8_t  priority       = 6;                      // Normal priority
-  uint8_t  source_address = 42;                     // Engine ECU address
-  uint32_t pgn            = 127488;                 // Engine Parameters, Dynamic
+  // Example 1: Water Depth (PGN 0x1f50b)
+  {
+    std::cout << "\n=== Water Depth PGN ===" << std::endl;
+    std::cout << std::endl;
 
-  // Calculate the COB-ID using the N2K helper function
-  uint32_t cobid = n2k::to_cobid(priority, source_address, pgn);
+    // raw CAN frame
+    const can::Frame frame = {
+      0x00, 0x24, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x30, 0x39,
+      0x00, 0x00, 0x00, 0x00, 0x49, 0x96, 0x02, 0xd2, 0x01, 0x08, 0x00, 0x00,
+      0x19, 0xf5, 0x0b, 0x19, 0x01, 0x0d, 0x02, 0x00, 0x00, 0xf4, 0x01, 0x32
+    };
 
-  // Create payload data for engine RPM and temperature
-  // In a real scenario, this would contain actual sensor data
-  can::PayloadData engine_data(0x1A2B3C4D5E6F7081); // Example engine data
+    std::cout << "CAN Frame: " << std::endl;
+    std::cout << "  " << frame.to_string() << std::endl;
+    std::cout << std::endl;
 
-  // Create the N2K packet
-  can::Packet n2k_packet(
-    36,                                             // size
-    1,                                              // type
-    12345,                                          // tag
-    1234567890,                                     // timestamp
-    1,                                              // channel
-    8,                                              // dlc (data length code)
-    0,                                              // flag
-    cobid,                                          // COB-ID calculated above
-    engine_data                                     // payload data
-    );
+    // CAN packet
+    can::Packet packet(frame);
 
-  std::cout << "=== N2K (NMEA 2000) Example ===" << std::endl;
-  std::cout << "Created N2K packet for Engine Parameters:" << std::endl;
-  std::cout << n2k::packet_to_string(n2k_packet) << std::endl;
+    std::cout << "CAN Packet: " << std::endl;
+    std::cout << "  " << packet.to_string() << std::endl;
+    std::cout << std::endl;
 
-  // Demonstrate COB-ID decoding
-  uint8_t  decoded_priority, decoded_source;
-  uint32_t decoded_pgn;
-  n2k::from_cobid(cobid, decoded_priority, decoded_source, decoded_pgn);
+    // N2k COB-ID
+    uint8_t  priority, source_address;
+    uint32_t pgn;
+    n2k::from_cobid(packet.get_id(), priority, source_address, pgn);
 
-  std::cout << "\nCOB-ID Analysis:" << std::endl;
-  std::cout << "Original COB-ID: 0x" << std::hex << cobid << std::dec << std::endl;
-  std::cout << "Decoded Priority: " << static_cast <int>(decoded_priority) << std::endl;
-  std::cout << "Decoded Source Address: " << static_cast <int>(decoded_source) << std::endl;
-  std::cout << "Decoded PGN: " << decoded_pgn << std::endl;
+    std::cout << "Decoded COB-ID: " << std::endl;
+    std::cout << "  Priority: " << static_cast <int>(priority);
+    std::cout << ", Source Address: " << static_cast <int>(source_address);
+    std::cout << ", PGN: 0x" << std::hex << pgn << std::dec << std::endl;
+    std::cout << std::endl;
 
-  // Create another N2K packet - GPS Position (PGN 129025)
-  priority       = 3;                            // High priority for navigation data
-  source_address = 15;                           // GPS receiver address
-  pgn            = 129025;                       // Position, Rapid Update
+    // N2k Data
+    n2k::pgns::water_depth water_depth(packet.get_data());
 
-  cobid = n2k::to_cobid(priority, source_address, pgn);
-  can::PayloadData gps_data(0xAABBCCDDEEFF0011); // Example GPS coordinates
+    std::cout << "PGN-specific Data:" << std::endl;
+    std::cout << "  SID: " << static_cast <int>(water_depth.sid);
+    std::cout << ", Depth: " << water_depth.depth << " m";
+    std::cout << ", Offset: " << water_depth.offset << " m";
+    std::cout << ", Range: " << static_cast <int>(water_depth.range) << std::endl;
+    std::cout << std::endl;
+  }
 
-  can::Packet gps_packet(
-    36, 1, 12346, 1234567891, 1, 8, 0, cobid, gps_data
-    );
+  // Example 2: Wind Data (PGN 0x1fd02)
+  {
+    std::cout << "\n=== Wind Data PGN ===" << std::endl;
+    std::cout << std::endl;
 
-  std::cout << "\n=== Second N2K Packet (GPS Position) ===" << std::endl;
-  std::cout << n2k::packet_to_string(gps_packet) << std::endl;
+    // raw CAN frame
+    const can::Frame frame = {
+      0x00, 0x24, 0x00, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x30, 0x3a,
+      0x00, 0x00, 0x00, 0x00, 0x49, 0x96, 0x02, 0xd3, 0x01, 0x08, 0x00, 0x00,
+      0x0d, 0xfd, 0x02, 0x1e, 0x02, 0x0e, 0x06, 0xf4, 0x7e, 0x02, 0x00, 0x00
+    };
 
-  // Convert to frame format
-  can::Frame n2k_frame = n2k_packet.to_frame();
-  std::cout << "\nN2K Frame representation:" << std::endl;
-  std::cout << n2k_frame.to_string() << std::endl;
+    std::cout << "CAN Frame: " << std::endl;
+    std::cout << "  " << frame.to_string() << std::endl;
+    std::cout << std::endl;
+
+    // CAN packet
+    can::Packet packet(frame);
+
+    std::cout << "CAN Packet: " << std::endl;
+    std::cout << "  " << packet.to_string() << std::endl;
+    std::cout << std::endl;
+
+    // N2k COB-ID
+    uint8_t  priority, source_address;
+    uint32_t pgn;
+    n2k::from_cobid(packet.get_id(), priority, source_address, pgn);
+
+    std::cout << "Decoded COB-ID: " << std::endl;
+    std::cout << "  Priority: " << static_cast <int>(priority);
+    std::cout << ", Source Address: " << static_cast <int>(source_address);
+    std::cout << ", PGN: 0x" << std::hex << pgn << std::dec << std::endl;
+    std::cout << std::endl;
+
+    // N2k Data
+    n2k::pgns::wind_data wind_data(packet.get_data());
+
+    std::cout << "PGN-specific Data:" << std::endl;
+    std::cout << "  SID: " << static_cast <int>(wind_data.sid);
+    std::cout << ", Wind Speed: " << wind_data.wind_speed << " m/s";
+    std::cout << ", Wind Angle: " << wind_data.wind_angle << " degrees";
+    std::cout << std::endl;
+  }
 
   return(0);
-} // main
+}

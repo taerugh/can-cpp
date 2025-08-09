@@ -1,0 +1,30 @@
+name: water_depth
+pgn: 0x1F50B
+description: "Water Depth"
+
+fields:
+  - name: sid
+    type: uint8_t
+    bitsize: 8
+    description: "Sequence Identifier"
+
+  - name: depth
+    type: double
+    bitsize: 32
+    signed: false
+    scale: 0.01
+    unit: "m"
+    description: "Depth below transducer"
+
+  - name: offset
+    type: double
+    bitsize: 16
+    signed: true
+    scale: 0.001
+    unit: "m"
+    description: "Distance between transducer and surface (positive) or keel (negative)"
+
+  - name: range
+    type: uint8_t
+    bitsize: 8
+    description: "Max measurement range"

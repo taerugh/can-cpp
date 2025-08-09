@@ -10,6 +10,7 @@ A C++ library for CAN bus packet handling, including support for higher level pr
 - Convenient size-agnostic endianness conversion with `hton()` and `ntoh()`
 - CANopen protocol support
 - NMEA 2000 (n2k) protocol support
+  - Easy to add PGN support with a simple yaml file
 
 ## Dependencies
 
@@ -55,17 +56,15 @@ This project supports code linting and formatting using [Uncrustify](https://git
 
 Install Uncrustify on your system:
 
-**macOS:**
 ```bash
+# macOS
 brew install uncrustify
-```
 
-**Ubuntu/Debian:**
-```bash
+# Ubuntu/Debian
 sudo apt-get install uncrustify
 ```
 
-**Other systems:** See the [Uncrustify installation guide](https://github.com/uncrustify/uncrustify).
+Other systems: See the [Uncrustify installation guide](https://github.com/uncrustify/uncrustify).
 
 #### Usage
 

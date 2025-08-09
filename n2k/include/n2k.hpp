@@ -2,6 +2,10 @@
 
 #include <packet.hpp>
 
+// Include generated PGN structures
+#include <water_depth.hpp>
+#include <wind_data.hpp>
+
 
 namespace n2k
 {

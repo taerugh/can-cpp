@@ -1,0 +1,34 @@
+name: wind_data
+pgn: 0x1FD02
+description: "Wind Data"
+
+fields:
+  - name: sid
+    type: uint8_t
+    bitsize: 8
+    description: "Sequence Identifier"
+
+  - name: wind_speed
+    type: double
+    bitsize: 16
+    signed: false
+    scale: 0.01
+    unit: "m/s"
+    description: "Wind Speed"
+
+  - name: wind_angle
+    type: double
+    bitsize: 16
+    signed: false
+    scale: 0.0001
+    unit: "rad"
+    description: "Wind Angle"
+
+  - name: reference
+    type: uint8_t
+    bitsize: 3
+    description: "Reference for wind angle"
+
+  - name: reserved
+    type: reserved
+    bitsize: 21

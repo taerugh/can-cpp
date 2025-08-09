@@ -1,11 +1,23 @@
+# Generate PGN C++ files
+find_package(Python3 REQUIRED COMPONENTS Interpreter)
+add_custom_target(generate_pgns_py
+  COMMAND ${Python3_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/scripts/generate_pgns.py
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  COMMENT "Running generate_pgns.py"
+)
+
 # N2K Library
 add_library(n2k
   src/n2k.cpp
 )
 
+# Make the library depend on the generate_pgns.py execution
+add_dependencies(n2k generate_pgns_py)
+
 target_include_directories(n2k
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/_pgns>
     $<INSTALL_INTERFACE:include>
   PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/../can/include
