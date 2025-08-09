@@ -4,13 +4,19 @@ A C++ library for CAN bus packet handling, including support for higher level pr
 
 ## Features
 
+### CAN
 - Unpack raw CAN frame byte sequences to `can::Packet` struct
 - Convert `can::Packet` to raw CAN frame to be transmitted
 - `Bits` class extends `std::bitset` for bit manipulation of CAN payload data
 - Convenient size-agnostic endianness conversion with `hton()` and `ntoh()`
-- CANopen protocol support
-- NMEA 2000 (n2k) protocol support
-  - Easy to add PGN support with a simple yaml file
+
+### CANopen
+- Unpack COB-ID to function code and node ID
+
+### NMEA 2000 (n2k)
+- Unpack COB-ID to priority, source address, and PGN
+- Convert CAN packet to PGN struct
+- Easy to add PGN support with a simple yaml file (automatic code generation)
 
 ## Dependencies
 
@@ -47,6 +53,23 @@ ctest --verbose
 ```
 
 **Note**: Google Test is automatically downloaded and built as part of the build process, ensuring consistent behavior across all platforms.
+
+### Running examples
+
+After building with examples enabled:
+
+```bash
+cd build
+
+# CAN example
+./example/can_example
+
+# N2k example
+./example/n2k_example
+
+# CANopen example
+./example/canopen_example
+```
 
 ### Code Linting and Formatting
 
